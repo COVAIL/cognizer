@@ -34,7 +34,7 @@ env:
 r_github_packages:
 - jimhester/covr
 after_success:
-- if [[ "${R_CODECOV}" ]]; then R -e 'covr::package_coverage(); system("ping -c 3 google.com"); library(cognizer); covr::codecov()'; fi
+- if [[ "${R_CODECOV}" ]]; then R -e 'covr::package_coverage(); Sys.getenv("SPEECH_TO_TEXT_USERNAME_PASSWORD")'; fi
 warnings_are_errors: true
 notifications:
   email:
