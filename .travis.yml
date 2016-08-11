@@ -9,7 +9,6 @@ matrix:
     dist: trusty
     env:
       - R_CODECOV=true
-      - secure: v8mNG0d66t3vrA9di8tuCRkeitwTXXgikJcRowt12Ry2l/HfTo7irbANZYl/5GfeqZ0xJbmrfL4La11oUQTFnGYs3pJ83LbkgbNqZUUEL1MU9IJHa5XSiqRyYiWWqhZLP84C1c79TrrF45zI6LD+jyvAEnjYV+W5D8e2fa0/SgRtlCKKaYBgXJcRUidDY+C1lMiMEO0H9OWt21z/743IilOjVVKUdBUwOAYflkrWzojroSvMFzxTu1prb90Di+anXfYEKaqJtj2GkECiVDoEoWcRP2kezdWApknqGfipX+e/xsMQK7mPE9VphoTJgz1E3XWEicVSAo3sBsGbdjZ8egT+lpe2kyYmnY6Uxhp/E9p7P6eQTfr3Tn2XO8GRyR3DpZrVbsw2C99DEy8bgw9gmYy55zSvoQKTukiea8gI5ZOOQg+Pkrm/5s90VJjgFcVOGbSf+SAnNAzeCFQjWBWJRMVQn9u1/G09ovsQ07KR2hvfN1KcZ/LfWaTYP6pCkkFvMOf597NXqqttlLaQF6H0ALuMc9YVAZSmAPM63x+cDMNbTuAfIVRfWCOI30C8kgsU1nisAv9AP3qn+/UFN84ARSnMf+82XUJ854/hdS9Oaca/Ly8WFncntMVgj8sTrELcrf1NJSXG1DuGfSXPzV32U8jOkdUld8/nkkkLfL1OPLg=
   - os: osx
     osx_image: xcode8
     before_install:
@@ -35,7 +34,7 @@ env:
 r_github_packages:
   - jimhester/covr
 after_success:
-  - if [[ "${R_CODECOV}" ]]; then R -e 'covr::codecov(token = Sys.getenv("CODECOV_TOKEN"))'; fi
+  - if [[ "${R_CODECOV}" ]]; then R -e 'covr::codecov()'; fi
 warnings_are_errors: true
 notifications:
   email:
