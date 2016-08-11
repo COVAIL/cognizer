@@ -7,3 +7,4 @@ api_list.R
 ^\.travis\.yml$
 .Renviron
 codecov.yml
+^appveyor\.yml$
