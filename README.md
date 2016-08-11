@@ -1,6 +1,7 @@
 cognizeR
 ================
 
+[![Build Status](https://travis-ci.org/ColumbusCollaboratory/cognizer.svg?branch=master)](https://travis-ci.org/ColumbusCollaboratory/cognizer)
 [![codecov](https://codecov.io/gh/ColumbusCollaboratory/cognizer/branch/master/graph/badge.svg)](https://codecov.io/gh/ColumbusCollaboratory/cognizer)
 
 
