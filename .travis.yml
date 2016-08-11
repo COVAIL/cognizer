@@ -34,7 +34,7 @@ env:
 r_github_packages:
 - jimhester/covr
 after_success:
-- if [[ "${R_CODECOV}" ]]; then R -e 'covr::package_coverage(); getwd(); sessionInfo(); covr::codecov()'; fi
+- if [[ "${R_CODECOV}" ]]; then R -e 'covr::package_coverage(); getwd(); dir(recursive = T); sessionInfo(); covr::codecov()'; fi
 warnings_are_errors: true
 notifications:
   email:
