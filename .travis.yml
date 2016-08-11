@@ -8,7 +8,9 @@ matrix:
   - os: linux
     dist: trusty
     env:
-      - R_CODECOV=true
+    - R_CODECOV=true
+    - secure: mCLNwgZ9EZDUgdZlf7fWpxPOrznLGS0++24lpX6jvBN0/vEa/yYOvsDBG5lRb2/ys+DhNclxYGmUIvOb0a7a6qd9i4a/VjvAyJ6vWe+xYSZzR7n3Ud+cdBskg+dL+KLNE7s1eirT46+Jy5sj359vm2Jx/u1YsOTJntTqsexWe8VKWgJeHzMOCa2olXe7mJpi+tjlgP3YK2I/Z2Tu9sWyBcvbnBfFGFBsnySQ5CDe4Sxl8LNMuvwaxi/ipFTTEuV1mV/cI6fgSghVRtQ9Pj0kApOOxod0xQIhQhqksBUMhFnu8+OsAmJ07L2+bRnZh1qm3FdDdUggUAZGeioyynwNoyN6+9I9XomTfIttJ8DLiMIjDoC2mFtvCDdc0cGQkTNUBcktD4kfMP+F/BDJxCH/+eiaVmaskHh215l4OF+iqHg7h9/39IeXDhK5SjV0VGFrCPGbCGOodB4clNUnHrzNHeuKFEUp6uq697Drn6/udAwBhPDFE1kt4L+u2lIXlwVKEGxttG3qQNq7pkbZQs4Iv6Iis8/esOth5dROLYgU7OLQa6cqLD7rqrjs0E6uzOdzGwo+/paFKJhvvJ3TnCVbQZV5+88XXUIDvo5QSmfdpnGrTsaLHMG4yUb/1/IJl43uozBaw0uKiO+r2vMxkHyssj49tInkmxAXKsbrSyuCoz8=
+
   - os: osx
     osx_image: xcode8
     before_install:
@@ -32,9 +34,9 @@ env:
   - secure: e1DAF9Atj0KHBmu5A0ux+t8dXPca+DUazqr3FJoxT1Ggkfey/0EJjqVmDbo3DENR7ZGBCJzOpO3hn5yuEHcW7LzcofkxuT44LshtNECznD/Iih/rHKarWbVnoNhtv+9LUvQdJxX5ObfNk7zisfwtMNylu/X3Xs9jPVZqnC9/6Y8GIbc1fI8DOWneKL34vTuKFLMg/rTNeqUtPXjN3okDopOuzAWO47lWg31Ebj+SaS2YpPaXIe62zVoQCB/iXCLv0+SZh5bS0/lrIdOQthhuyMJ0Dk9SfRvDyczn432rGa96MtuQlZzv8GNQg3wO70Lh1vUwBntTi2oZzzkzrmjZGum8XahrzjTH0YskeuQf7p1zHT9KNkJ7zzuvdN/ICzBTdHMs7EL2dm7ix05MW6vBgBXKxMmFrIM+RguIUQVy7FeTrlMkdcvbVkdlp00qs03N7zZX8M1Z8Hwx3dr3x0ZXHW3TNd7Mau3qrKMeHnDelHjujf0OvkWdjpJPeA+urq50rHtcXxWLtuCooEIIpJ1XI3JblVTO7igumILLiB3K6IYghGBDH9ZecvF8MmO8xQQot7Wskpl5d4EFROjjgrSCgtddQMyWdtoS9Daap4sE4TDqZEcBfapuM9G/mWdZJuU7yCHV5hz5RX+aIdz01t9UD/LLjqjVWJdcoBu8TpDIDIk=
   - secure: GXztCPSJ9iLXS6gmbSZIUCxmnDdI13xa9ZTHw+ZdYfNM/8x1uTHDxlAq8CfAsxif/rPY4J3pDKjXcDmzoaX9kaSz0DAnpZKnWSOYXRXi4sxnt6TjfHeBo4Vposyi8AWMZQEu2lHlz9vbJ3n1wRPyqcoASPMB2npLl90bsbH5DYGIidsesDfjLbIXMTSpz7D5YDAAg3PW4ouONryeD4NzdOvKG5VMWhTb5l7s73caJEKzgydyRSOyzjCsFvkUJsiPS9GsAt8z5qPY+RQc1WEY7bVrai1jW8/gr40yXFhNzZ78YOfvHMDAq6gm+2ebvfsW49ok6bwJXvj4mngKsyKYfDhHB8L9Eiz/JcS861OH78NyAi7oSwpZLvFN03MAt9lT5udzT/y1ojG/XpiKm2WDzBWOQI4kt2i2l6wIZnxOzpQvIejgoHviOXdyTj45SMs1O7E9f5Fr1BG7EwEIDwsQf9lJxTJrybk1FKLcrJY+RcnTMkSMkoZO0jSLBA0L3bY8JT+4wid6YPEc+v83TH+H2qSDePmmrma1fEDVsantKw32bPMi3K6RHwgAGcT4DRQUyBIduw4haFyKGJ0aQdESro1p+fgXVs+NYLjLkV3gpPm3oXPy0wfQgySTSDZRs39zXnrrAv9lJooNCCttuKd9xYzzNpwQCBBRlkpyRA1l+xw=
 r_github_packages:
-  - jimhester/covr
+- jimhester/covr
 after_success:
-  - if [[ "${R_CODECOV}" ]]; then R -e 'covr::codecov()'; fi
+- if [[ "${R_CODECOV}" ]]; then R -e 'covr::codecov()'; fi
 warnings_are_errors: true
 notifications:
   email:
