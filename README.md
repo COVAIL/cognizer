@@ -1,6 +1,10 @@
 cognizeR
 ================
 
+[![codecov](https://codecov.io/gh/ColumbusCollaboratory/cognizer/branch/master/graph/badge.svg)](https://codecov.io/gh/ColumbusCollaboratory/cognizer)
+
+
+
 R package to wrap function calls to IBM Watson services.
 
 You must already have an active Bluemix ID to obtain credentials for a service; for more information, see [Registering for Bluemix](https://www.ibm.com/watson/developercloud/doc/getting_started/gs-bluemix.shtml#register).
