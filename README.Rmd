@@ -1,0 +1,275 @@
+---
+title: "cognizeR"
+output: github_document
+---
+
+```{r setup, include=FALSE, echo=FALSE}
+  knitr::opts_knit$set(progress = TRUE, verbose = TRUE)
+  library(cognizer)
+  library(knitr)
+  ALCHEMY_API_KEY <- Sys.getenv("ALCHEMY_API_KEY")
+  LANG_TRANSLATE_USERNAME_PASSWORD <- Sys.getenv("LANG_TRANSLATE_USERNAME_PASSWORD")
+  PERSONALITY_USERNAME_PASSWORD <- Sys.getenv("PERSONALITY_USERNAME_PASSWORD")
+  TONE_USERNAME_PASSWORD <- Sys.getenv("TONE_USERNAME_PASSWORD")
+  TEXT_TO_SPEECH_USERNAME_PASSWORD <- Sys.getenv("TEXT_TO_SPEECH_USERNAME_PASSWORD")
+  IMAGE_API_KEY <- Sys.getenv("IMAGE_API_KEY")
+  SPEECH_TO_TEXT_USERNAME_PASSWORD <- Sys.getenv("SPEECH_TO_TEXT_USERNAME_PASSWORD")
+  
+
+   # knitr hook function to allow an output.lines option
+   # e.g.,
+   #   output.lines=12 prints lines 1:12 ...
+   #   output.lines=1:12 does the same
+   #   output.lines=3:15 prints lines ... 3:15 ...
+   #   output.lines=-(1:8) removes lines 1:8 and prints ... 9:n ...
+   #   No allowance for anything but a consecutive range of lines
+   #   https://stat.ethz.ch/pipermail/r-help/2014-October/422286.html
+
+   hook_output <- knit_hooks$get("output")
+   knit_hooks$set(output = function(x, options) {
+      lines <- options$output.lines
+      if (is.null(lines)) {
+        return(hook_output(x, options))  # pass to default hook
+      }
+      x <- unlist(strsplit(x, "\n"))
+      more <- "..."
+      if (length(lines)==1) {        # first n lines
+        if (length(x) > lines) {
+          # truncate the output, but add ....
+          x <- c(head(x, lines), more)
+        }
+      } else {
+        x <- c(if (abs(lines[1])>1 | lines[1]<0) more else NULL,
+               x[lines],
+               if (length(x)>lines[abs(length(lines))]) more else NULL
+              )
+      }
+      # paste these lines together
+      x <- paste(c(x, ""), collapse = "\n")
+      hook_output(x, options)
+    })
+
+```
+
+R package to wrap function calls to IBM Watson services.
+
+You must already have an active Bluemix ID and account to obtain credentials for a service; for more information, see [Registering for Bluemix](https://www.ibm.com/watson/developercloud/doc/getting_started/gs-bluemix.shtml#register).
+
+In addition to an active Bluemix ID, you must already have service credentials from Bluemix for each Watson Service you will be using through congizeR. Please follow the following steps for “[Getting service credentials in Bluemix](https://www.ibm.com/watson/developercloud/doc/getting_started/gs-credentials.shtml)”.
+
+####**Install**
+
+You can install:
+
+* the latest version from the private GITHUB repo with
+```r
+if (packageVersion("devtools") < 1.6) {
+  install.packages("devtools")
+}
+if (packageVersion("curl") < 0.9.9) {
+  install_github("jeroenooms/curl")
+}
+devtools::install_github("ColumbusCollaboratory/cognizeR", auth_token = "token")
+```
+
+
+
+* You'll probably also want to install the data packages used in the tests:
+```r
+install.packages(c("rmsfact", "testthat"))
+```
+
+You may want to review the Watson Services documentation for those services available through the R package.
+
+####**Authentication**
+All Watson services use basic authentication in the form of api keys or username-password combinations. To start using cognizeR functions, you will need to pass your authentication details to them as an argument. There are many ways to manage your passwords, and we do not want to impose any particular structure on this process. If no solution comes to mind, one approach is to use the R environment file to store your authentication details that can be easily and programmatically passed to the cognizeR functions.
+
+If you already have .Renviron file in your home directory, then you can add something like
+
+```{r eval = FALSE}
+SERVICE_API_KEY = "key"
+```
+and/or 
+
+```{r eval = FALSE}
+SERVICE_USERNAME_PASSWORD = "username:password"
+```
+(Notice the use of `=` as opposed `<-` when storing environment variables.) If not, then you can run the following commands to create and edit the file by inserting the name and value pairs of the environment variables in the above format:
+
+```{r eval = FALSE}
+r_env <- file.path(normalizePath("~"), ".Renviron")
+if (!file.exists(r_env)) file.create(r_env)
+file.edit(r_env)
+```
+
+After restarting R, you can then access the values of environment variables with
+
+```{r eval = FALSE}
+Sys.getenv("API_SERVICE_NAME")
+```
+
+
+####<a name="toc"></a>**cognizeR Watson Services Examples:**
+
+  + [Text Processing](#text)
+    * [Alchemy Language](#alchemy)  [<sub><sub>-IBM Docs-</sub></sub>](http://www.ibm.com/watson/developercloud/alchemy-language.html)
+        + [Sentiment Analysis](#sentiment)  [<sub><sub>-IBM Docs-</sub></sub>](http://www.ibm.com/watson/developercloud/alchemy-language/api/v1/?curl#sentiment)
+        + [Keyword Extraction](#keyword)  [<sub><sub>-IBM Docs-</sub></sub>](http://www.ibm.com/watson/developercloud/alchemy-language/api/v1/?curl#keywords)
+        + [Emotion Analysis](#emotion)  [<sub><sub>-IBM Docs-</sub></sub>](http://www.ibm.com/watson/developercloud/alchemy-language/api/v1/?curl#emotion_analysis)
+        + [Language Detection](#language)  [<sub><sub>-IBM Docs-</sub></sub>](http://www.ibm.com/watson/developercloud/alchemy-language/api/v1/?curl#language)
+        + [Entity Extraction](#entity)  [<sub><sub>-IBM Docs-</sub></sub>](http://www.ibm.com/watson/developercloud/alchemy-language/api/v1/?curl#entities)
+        + [Concept Tagging](#concept)  [<sub><sub>-IBM Docs-</sub></sub>](http://www.ibm.com/watson/developercloud/alchemy-language/api/v1/?curl#concepts)    
+        + [Relation Extraction](#relations)  [<sub><sub>-IBM Docs-</sub></sub>](http://www.ibm.com/watson/developercloud/alchemy-language/api/v1/?curl#relations)    
+        + [Taxonomy Classification](#taxonomy)  [<sub><sub>-IBM Docs-</sub></sub>](http://www.ibm.com/watson/developercloud/alchemy-language/api/v1/?curl#taxonomy)     
+    * [Language Translation](#translate)  [<sub><sub>-IBM Docs-</sub></sub>](http://www.ibm.com/watson/developercloud/language-translation.html)
+    * [Personality Insights](#personality)  [<sub><sub>-IBM Docs-</sub></sub>](http://www.ibm.com/watson/developercloud/personality-insights.html)
+    * [Tone Analyzer](#tone)  [<sub><sub>-IBM Docs-</sub></sub>](http://www.ibm.com/watson/developercloud/tone-analyzer.html)
+    * [Text-to-Speech](#text-speech)  [<sub><sub>-IBM Docs-</sub></sub>](http://www.ibm.com/watson/developercloud/text-to-speech.html)
+  + [Image Visual Recognition](#image) [<sub><sub>-IBM Docs-</sub></sub>](http://www.ibm.com/watson/developercloud/visual-recognition.html)
+    * [Classification of Images](#image-classify)  [<sub><sub>-IBM Docs-</sub></sub>](http://www.ibm.com/watson/developercloud/visual-recognition/api/v3/#classify_an_image)
+    * [Detect Faces in Image](#image-faces)  [<sub><sub>-IBM Docs-</sub></sub>](http://www.ibm.com/watson/developercloud/visual-recognition/api/v3/#detect_faces)
+    * [Detect Text in Image](#image-text)  [<sub><sub>-IBM Docs-</sub></sub>](http://www.ibm.com/watson/developercloud/visual-recognition/api/v3/#recognize_text)
+  + [Audio Processing](#audio)  
+    * [Speech-to-Text](#audio-text)  [<sub><sub>-IBM Docs-</sub></sub>](http://www.ibm.com/watson/developercloud/speech-to-text.html)
+
+
+###<a name="text"></a>Text Processing 
+####<a name="alchemy"></a>Alchemy Language
+#####<a name="sentiment"></a>Sentiment Analysis  [<sub><sub><sub>-top-</sub></sub></sub>](#toc)
+```{r sentiment, collapse=TRUE}
+text <- c("Columbus, Ohio is Awesome!", "Looking forward to UseR2017 in Brussels!")
+result <- text_sentiment(text, YOUR_API_KEY)
+str(result)
+```
+
+#####<a name="keyword"></a>Keyword Extraction  [<sub><sub><sub>-top-</sub></sub></sub>](#toc)
+```{r keywords, collapse=TRUE}
+text <- c("Columbus, Ohio is Awesome!", "Looking forward to UseR2017 in Brussels!")
+result <- text_keywords(text, YOUR_API_KEY)
+str(result)
+```
+
+#####<a name="emotion"></a>Emotion Analysis  [<sub><sub><sub>-top-</sub></sub></sub>](#toc)
+```{r emotion, collapse=TRUE}
+text <- c("Columbus, Ohio is Awesome!", "Looking forward to UseR2017 in Brussels!")
+result <- text_emotion(text, YOUR_API_KEY)
+str(result)
+```
+
+#####<a name="language"></a>Language Detection  [<sub><sub><sub>-top-</sub></sub></sub>](#toc)
+```{r language, collapse=TRUE}
+text <- c("Columbus, Ohio is Awesome!", "Mirando hacia adelante a UseR2017 en Bruselas!")
+result <- text_language(text, YOUR_API_KEY)
+str(result)
+```
+
+#####<a name="entity"></a>Entity Extraction  [<sub><sub><sub>-top-</sub></sub></sub>](#toc)
+```{r entity, collapse=TRUE}
+text <- c("Columbus, Ohio is Awesome!", "Looking forward to UseR2017 in Brussels!")
+result <- text_entity(text, YOUR_API_KEY)
+str(result)
+```
+
+#####<a name="concept"></a>Concept Tagging  [<sub><sub><sub>-top-</sub></sub></sub>](#toc)
+```{r concepts, collapse=TRUE}
+text <- "Columbus, Ohio is Awesome!"
+result <- text_concept(text, YOUR_API_KEY)
+str(result)
+```
+
+#####<a name="relations"></a>Relation Extraction  [<sub><sub><sub>-top-</sub></sub></sub>](#toc)
+```{r relations, collapse=TRUE}
+text <- "Columbus, Ohio is Awesome!"
+result <- text_relations(text, YOUR_API_KEY)
+str(result)
+```
+
+#####<a name="taxonomy"></a>Taxonomy Classification  [<sub><sub><sub>-top-</sub></sub></sub>](#toc)
+```{r taxonomy, collapse=TRUE}
+text <- "Columbus, Ohio is Awesome!"
+result <- text_taxonomy(text, YOUR_API_KEY)
+str(result)
+```
+
+####<a name="translate"></a>Language Translate  [<sub><sub><sub>-top-</sub></sub></sub>](#toc)
+The following Web Services use IBM Bluemix Watson Services Username and Passwords as available on [Bluemix Credentials](https://www.ibm.com/watson/developercloud/doc/getting_started/gs-credentials.shtml) in a colon deliminated string.  LANG_TRANSLATE_USERNAME_PASSWORD is a username:password string as defined for each Bluemix Watson Services.
+```{r translate, collapse=TRUE}
+text <- c("Mirando hacia adelante a UseR2017 en Bruselas!")
+result <- text_translate(text, LANG_TRANSLATE_USERNAME_PASSWORD)
+str(result)
+```
+
+####<a name="personality"></a>Personality Insights  [<sub><sub><sub>-top-</sub></sub></sub>](#toc)
+The following Web Services use IBM Bluemix Watson Services Username and Passwords as available on [Bluemix Credentials](https://www.ibm.com/watson/developercloud/doc/getting_started/gs-credentials.shtml) in a colon deliminated string.  PERSONALITY_USERNAME_PASSWORD is a username:password string as defined for each Bluemix Watson Services.
+```{r personality, collapse=TRUE, output.lines=1:35}
+text <- paste(replicate(1000, rmsfact::rmsfact()), collapse = ' ') #Ten Richard Stallman Facts used for Personality Insights.
+result <- text_personality(text, PERSONALITY_USERNAME_PASSWORD)
+str(result)
+```
+
+####<a name="tone"></a>Tone Analyzer  [<sub><sub><sub>-top-</sub></sub></sub>](#toc)
+The following Web Services use IBM Bluemix Watson Services Username and Passwords as available on [Bluemix Credentials](https://www.ibm.com/watson/developercloud/doc/getting_started/gs-credentials.shtml) in a colon deliminated string.  TONE_USERNAME_PASSWORD is a username:password string as defined for each Bluemix Watson Services.
+```{r tone, collapse=TRUE}
+text <- c("Columbus, Ohio is Awesome!")
+result <- text_tone(text, TONE_USERNAME_PASSWORD)
+str(result)
+```
+
+####<a name="text-speech"></a>Text-to-Speech  [<sub><sub><sub>-top-</sub></sub></sub>](#toc)
+The following Web Services use IBM Bluemix Watson Services Username and Passwords as available on [Bluemix Credentials](https://www.ibm.com/watson/developercloud/doc/getting_started/gs-credentials.shtml) in a colon deliminated string.  TEXT_TO_SPEECH_USERNAME_PASSWORD is a username:password string as defined for each Bluemix Watson Services.
+```{r audio-file-clean, include=FALSE, echo=FALSE}
+junk <- dir(path = ".", pattern = "*.ogg") 
+file.remove(junk)
+```
+```{r text-speech, collapse=TRUE}
+text <- c("Columbus, Ohio is Awesome!")
+text_audio(text, TEXT_TO_SPEECH_USERNAME_PASSWORD, directory = '.')
+```
+
+```{r audio-file, include=FALSE, echo=FALSE}
+filenames <- list.files(".", pattern="*.ogg", full.names=FALSE)
+```
+The .ogg audio file is written to the current directory.
+
+You can listen to the example audio file in the repository:  [`r filenames[1]`](`r filenames[1]`)
+
+
+###<a name="image"></a>Image Visual Recognition
+#####<a name="image-classify"></a>Classification of Image  [<sub><sub><sub>-top-</sub></sub></sub>](#toc)
+The following Web Services use IBM Bluemix Watson Services IMAGE_API_KEY specific to Image processsing.
+```{r image-classify, collapse=TRUE}
+image_face_path <- system.file("extdata/images_faces", package = "cognizer")
+images <- list.files(image_face_path, full.names = TRUE)
+image_classes <- image_classify(images, IMAGE_API_KEY)
+str(image_classes)
+```
+
+#####<a name="image-faces"></a>Detect Faces in Image  [<sub><sub><sub>-top-</sub></sub></sub>](#toc)
+The following Web Services use IBM Bluemix Watson Services IMAGE_API_KEY specific to Image processsing.
+```{r image-faces, collapse=TRUE}
+image_face_path <- system.file("extdata/images_faces", package = "cognizer")
+images <- list.files(image_face_path, full.names = TRUE)
+image_faces <- image_detectface(images, IMAGE_API_KEY)
+str(image_faces)
+```
+
+#####<a name="image-text"></a>Detect Text in Image  [<sub><sub><sub>-top-</sub></sub></sub>](#toc)
+The following Web Services use IBM Bluemix Watson Services IMAGE_API_KEY specific to Image processsing.
+```{r image-text, collapse=TRUE}
+image_text_path <- system.file("extdata/images_text", package = "cognizer")
+images <- list.files(image_text_path, full.names = TRUE)
+image_text<- image_detecttext(images, IMAGE_API_KEY)
+str(image_text)
+```
+
+###<a name="audio"></a>Audio Processing
+#####<a name="audio-text"></a>Speech to Text  [<sub><sub><sub>-top-</sub></sub></sub>](#toc)
+The following Web Services use IBM Bluemix Watson Services Username and Passwords as available on [Bluemix Credentials](https://www.ibm.com/watson/developercloud/doc/getting_started/gs-credentials.shtml) in a colon deliminated string.  SPEECH_TO_TEXT_USERNAME_PASSWORD is a username:password string as defined for each Bluemix Watson Services.
+```{r audio-text, collapse=TRUE}
+audio_path <- system.file("extdata/audio", package = "cognizer")
+audios <- list.files(audio_path, full.names = TRUE)
+audio_transcript <- audio_text(audios, SPEECH_TO_TEXT_USERNAME_PASSWORD)
+str(audio_transcript)
+```
+
+
