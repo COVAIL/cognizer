@@ -9,8 +9,8 @@ Authors@R: c(
     person("Columbus Collaboratory, LLC", email = "info@cbuscollaboratory.com",
       role = c("cph")))
 Description: Automates access to IBM Watson APIs to make it easy to request
-    analyses of text data.
-URL: columbuscollaboratory.com
+    analyses of text, image and audio data.
+URL: http://columbuscollaboratory.com
 SystemRequirements: libcurl: libcurl-devel (rpm) or libcurl4-openssl-dev (deb).
 Depends: R (>= 3.2.2)
 Imports: curl (> 0.9.7), jsonlite (>= 0.9.19), magrittr (>= 1.5)
