@@ -34,7 +34,7 @@ env:
 r_github_packages:
 - jimhester/covr
 after_success:
-- if [[ "${R_CODECOV}" ]]; then R -e 'covr::codecov(branch = "gh/ColumbusCollaboratory/cognizer")'; fi
+- if [[ "${R_CODECOV}" ]]; then R -e 'covr::codecov()'; fi
 warnings_are_errors: true
 notifications:
   email:
