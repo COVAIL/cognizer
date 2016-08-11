@@ -1,7 +1,6 @@
 ^.*\.Rproj$
 ^\.Rproj\.user$
 ^notes\.*.*$
-api_list.R
 ^README\..*$
 ^.*\.ogg$
 ^\.travis\.yml$
