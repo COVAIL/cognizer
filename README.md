@@ -1,10 +1,6 @@
 cognizeR
 ================
 
-[![Travis-CI Build Status](https://travis-ci.com/ColumbusCollaboratory/cognizeR_private.svg?token=zd8rr4z9pAtHy24PJsvV&branch=master)](https://travis-ci.org/ColumbusCollaboratory/cognizeR_private)
-[![codecov](https://codecov.io/gh/ColumbusCollaboratory/cognizeR_private/branch/master/graph/badge.svg?token=eCX3iHiHtS)](https://codecov.io/gh/ColumbusCollaboratory/cognizeR_private)
-
-
 R package to wrap function calls to IBM Watson services.
 
 You must already have an active Bluemix ID to obtain credentials for a service; for more information, see [Registering for Bluemix](https://www.ibm.com/watson/developercloud/doc/getting_started/gs-bluemix.shtml#register).
