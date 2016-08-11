@@ -36,7 +36,7 @@ env:
 r_github_packages:
 - jimhester/covr
 after_success:
-- if [[ "${R_CODECOV}" ]]; then R -e 'covr::codecov(token = Sys.getenv("CODECOV_TOKEN""))'; fi
+- if [[ "${R_CODECOV}" ]]; then R -e 'covr::codecov(token = Sys.getenv("CODECOV_TOKEN"))'; fi
 warnings_are_errors: true
 notifications:
   email:
