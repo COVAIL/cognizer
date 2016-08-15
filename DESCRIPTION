@@ -13,7 +13,7 @@ Description: Automates access to IBM Watson APIs to make it easy to request
 URL: http://columbuscollaboratory.com
 SystemRequirements: libcurl: libcurl-devel (rpm) or libcurl4-openssl-dev (deb).
 Depends: R (>= 3.2.2)
-Imports: curl (> 2.0), jsonlite (>= 0.9.19), magrittr (>= 1.5)
+Imports: curl, jsonlite (>= 0.9.19), magrittr (>= 1.5)
 Suggests: testthat, rmsfact
 Remotes: jeroenooms/curl
 License: MIT + file LICENSE
