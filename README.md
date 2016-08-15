@@ -12,22 +12,16 @@ R package to wrap function calls to IBM Watson services.
 
 You must already have an active Bluemix ID to obtain credentials for a service; for more information, see [Registering for Bluemix](https://www.ibm.com/watson/developercloud/doc/getting_started/gs-bluemix.shtml#register).
 
-In addition to an active Bluemix ID, you must already have service credentials from Bluemix for each Watson Service you will be using through congizeR. Please follow the following steps for “[Getting service credentials in Bluemix](https://www.ibm.com/watson/developercloud/doc/getting_started/gs-credentials.shtml)”.
+In addition to an active Bluemix ID, you must already have service credentials from Bluemix for each Watson Service you will be using through congizer. Please follow the following steps for “[Getting service credentials in Bluemix](https://www.ibm.com/watson/developercloud/doc/getting_started/gs-credentials.shtml)”.
 
 #### **Install**
 
-You can install:
-
--   the latest version from the private GITHUB repo with
+-    Some high-performance curl functions that cognizer depends on have not been pushed to CRAN, yet, so you will need the development version of curl:
 
     ``` r
-    if (packageVersion("devtools") < 1.6) {
-      install.packages("devtools")
-    }
-    if (packageVersion("curl") < 0.9.9) {
-      install_github("jeroenooms/curl")
-    }
-    devtools::install_github("ColumbusCollaboratory/cognizer", auth_token = "token")
+    install.packages("devtools")
+    install.packages("https://github.com/jeroenooms/curl/archive/master.tar.gz", repos = NULL)
+    devtools::install_github("ColumbusCollaboratory/cognizer")
     ```
 
 -   You'll probably also want to install the data packages used in the tests:
@@ -35,8 +29,6 @@ You can install:
     ``` r
     install.packages(c("rmsfact", "testthat"))
     ```
-
-You may want to review the Watson Services documentation for those services available through the R package.
 
 #### **Authentication**
 
