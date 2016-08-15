@@ -16,7 +16,7 @@ In addition to an active Bluemix ID, you must already have service credentials f
 
 #### **Install**
 
--    Some high-performance curl functions that cognizer depends on have not been pushed to CRAN, yet, so you will need the development version of curl:
+-    Some high-performance curl functions that cognizer depends on have not been pushed to CRAN, yet, so __you will need the development version of curl__:
 
     ``` r
     install.packages("devtools")
