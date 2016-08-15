@@ -1,4 +1,4 @@
-cognizeR
+cognizer
 ================
 
 [![Build Status](https://travis-ci.org/ColumbusCollaboratory/cognizer.svg?branch=master)](https://travis-ci.org/ColumbusCollaboratory/cognizer)
@@ -40,7 +40,7 @@ You may want to review the Watson Services documentation for those services avai
 
 #### **Authentication**
 
-All Watson services use basic authentication in the form of api keys or username-password combinations. To start using cognizeR functions, you will need to pass your authentication details to them as an argument. There are many ways to manage your passwords, and we do not want to impose any particular structure on this process. If no solution comes to mind, one approach is to use the R environment file to store your authentication details that can be easily and programmatically passed to the cognizeR functions.
+All Watson services use basic authentication in the form of api keys or username-password combinations. To start using cognizer functions, you will need to pass your authentication details to them as an argument. There are many ways to manage your passwords, and we do not want to impose any particular structure on this process. If no solution comes to mind, one approach is to use the R environment file to store your authentication details that can be easily and programmatically passed to the cognizer functions.
 
 If you already have .Renviron file in your home directory, then you can add something like
 
@@ -68,7 +68,7 @@ After restarting R, you can then access the values of environment variables with
 Sys.getenv("API_SERVICE_NAME")
 ```
 
-#### <a name="toc"></a>**cognizeR Watson Services Examples:**
+#### <a name="toc"></a>**cognizer Watson Services Examples:**
 
 -   [Text Processing](#text)
     -   [Alchemy Language](#alchemy) [<sub><sub>-IBM Docs-</sub></sub>](http://www.ibm.com/watson/developercloud/alchemy-language.html)
