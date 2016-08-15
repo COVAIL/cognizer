@@ -27,7 +27,7 @@ You can install:
     if (packageVersion("curl") < 0.9.9) {
       install_github("jeroenooms/curl")
     }
-    devtools::install_github("ColumbusCollaboratory/cognizeR", auth_token = "token")
+    devtools::install_github("ColumbusCollaboratory/cognizer", auth_token = "token")
     ```
 
 -   You'll probably also want to install the data packages used in the tests:
