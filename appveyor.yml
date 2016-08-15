@@ -13,6 +13,8 @@ install:
 # Adapt as necessary starting from here
 environment:
     USE_RTOOLS: true
+    R_ARCH: x64
+    R_VERSION: stable
 
 build_script:
   - travis-tool.sh install_deps
