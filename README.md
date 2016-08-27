@@ -57,7 +57,7 @@ file.edit(r_env)
 After restarting R, you can then access the values of environment variables with
 
 ``` r
-Sys.getenv("API_SERVICE_NAME")
+Sys.getenv("SERVICE_API_KEY")
 ```
 
 #### <a name="toc"></a>**cognizer Watson Services Examples:**
