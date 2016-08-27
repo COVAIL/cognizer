@@ -12,7 +12,7 @@ R package to wrap function calls to IBM Watson services.
 
 You must already have an active Bluemix ID to obtain credentials for a service; for more information, see [Registering for Bluemix](https://www.ibm.com/watson/developercloud/doc/getting_started/gs-bluemix.shtml#register).
 
-In addition to an active Bluemix ID, you must already have service credentials from Bluemix for each Watson Service you will be using through congizer. Please follow the following steps for “[Getting service credentials in Bluemix](https://www.ibm.com/watson/developercloud/doc/getting_started/gs-credentials.shtml)”.
+In addition to an active Bluemix ID, you must already have service credentials from Bluemix for each Watson Service you will be using through cognizer. Please follow the following steps for “[Getting service credentials in Bluemix](https://www.ibm.com/watson/developercloud/doc/getting_started/gs-credentials.shtml)”.
 
 #### **Install**
 
