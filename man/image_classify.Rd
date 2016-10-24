@@ -29,7 +29,7 @@ Watson services for the purpose of training their models.}
 headers, and content, to debug or to write a custom parser for content.
 The default callback parses content into a data.frame while dropping other
 response values to make the output easily passable to tidyverse packages like
-dplyr or ggplot2. For further details or debugging one can pass a print or a
+dplyr or ggplot2. For further details or debugging one can pass a fail or a
 more compicated function.}
 
 \item{type}{Character scalar specifying image format. Alternative is "image/png".}

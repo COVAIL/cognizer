@@ -24,6 +24,7 @@
 #' @importFrom magrittr '%>%'
 #' @importFrom curl new_handle handle_setheaders handle_setopt handle_setform
 #' @importFrom curl curl_escape multi_add multi_run form_file curl_download
+#' @importFrom xml2 xml_text read_xml xml_child
 text_sentiment <- function(
   text,
   api_key,
@@ -44,7 +45,17 @@ text_sentiment <- function(
   urls <- paste0(protocol, service, parameters, "&text=", curl_escape(text))
 
   done <- if (is.null(callback))  function(resp, index) {
-    resps[[index]] <<- fromJSON(rawToChar(resp$content))
+    txt <- rawToChar(resp$content)
+    if (resp$status_code != 200) {
+      error_msg <<- suppressWarnings(read_xml(txt, as_html = TRUE)) %>% 
+        xml_child %>% 
+        xml_text 
+      cat(sprintf("Request %s failed: %s\n", index, error_msg))
+      resps[[index]] <<- error_msg
+      return(invisible(NULL))
+    } 
+    resps[[index]] <<- fromJSON(txt)
+    invisible(NULL)
   } else callback
   fail <- function(resp, index) {
     cat(sprintf("Request %s failed: %s \n", index, resp))
@@ -106,11 +117,22 @@ text_keywords <- function(
   urls <- paste0(protocol, service, parameters, "&text=", curl_escape(text))
 
   done <- if (is.null(callback))  function(resp, index) {
-    resps[[index]] <<- fromJSON(rawToChar(resp$content))
+    txt <- rawToChar(resp$content)
+    if (resp$status_code != 200) {
+      error_msg <<- suppressWarnings(read_xml(txt, as_html = TRUE)) %>% 
+        xml_child %>% 
+        xml_text 
+      cat(sprintf("Request %s failed: %s\n", index, error_msg))
+      resps[[index]] <<- error_msg
+      return(invisible(NULL))
+    } 
+    resps[[index]] <<- fromJSON(txt)
+    invisible(NULL)
   } else callback
   fail <- function(resp, index) {
     cat(sprintf("Request %s failed: %s \n", index, resp))
     resps[[index]] <<- resp
+    invisible(NULL)
   }
 
   resps <- vector("list", length(urls))
@@ -157,7 +179,17 @@ text_emotion <- function(
   urls <- paste0(protocol, service, parameters, "&text=", curl_escape(text))
 
   done <- if (is.null(callback))  function(resp, index) {
-    resps[[index]] <<- fromJSON(rawToChar(resp$content))
+    txt <- rawToChar(resp$content)
+    if (resp$status_code != 200) {
+      error_msg <<- suppressWarnings(read_xml(txt, as_html = TRUE)) %>% 
+        xml_child %>% 
+        xml_text 
+      cat(sprintf("Request %s failed: %s\n", index, error_msg))
+      resps[[index]] <<- error_msg
+      return(invisible(NULL))
+    } 
+    resps[[index]] <<- fromJSON(txt)
+    invisible(NULL)
   } else callback
   fail <- function(resp, index) {
     cat(sprintf("Request %s failed: %s \n", index, resp))
@@ -208,7 +240,17 @@ text_language <- function(
   urls <- paste0(protocol, service, parameters, "&text=", curl_escape(text))
 
   done <- if (is.null(callback))  function(resp, index) {
-    resps[[index]] <<- fromJSON(rawToChar(resp$content))
+    txt <- rawToChar(resp$content)
+    if (resp$status_code != 200) {
+      error_msg <<- suppressWarnings(read_xml(txt, as_html = TRUE)) %>% 
+        xml_child %>% 
+        xml_text 
+      cat(sprintf("Request %s failed: %s\n", index, error_msg))
+      resps[[index]] <<- error_msg
+      return(invisible(NULL))
+    } 
+    resps[[index]] <<- fromJSON(txt)
+    invisible(NULL)
   } else callback
   fail <- function(resp, index) {
     cat(sprintf("Request %s failed: %s \n", index, resp))
@@ -284,7 +326,17 @@ text_entity <- function(
   urls <- paste0(protocol, service, parameters, "&text=", curl_escape(text))
 
   done <- if (is.null(callback))  function(resp, index) {
-    resps[[index]] <<- fromJSON(rawToChar(resp$content))
+    txt <- rawToChar(resp$content)
+    if (resp$status_code != 200) {
+      error_msg <<- suppressWarnings(read_xml(txt, as_html = TRUE)) %>% 
+        xml_child %>% 
+        xml_text 
+      cat(sprintf("Request %s failed: %s\n", index, error_msg))
+      resps[[index]] <<- error_msg
+      return(invisible(NULL))
+    } 
+    resps[[index]] <<- fromJSON(txt)
+    invisible(NULL)
   } else callback
   fail <- function(resp, index) {
     cat(sprintf("Request %s failed: %s \n", index, resp))
@@ -340,7 +392,17 @@ text_concept <- function(
   urls <- paste0(protocol, service, parameters, "&text=", curl_escape(text))
 
   done <- if (is.null(callback))  function(resp, index) {
-    resps[[index]] <<- fromJSON(rawToChar(resp$content))
+    txt <- rawToChar(resp$content)
+    if (resp$status_code != 200) {
+      error_msg <<- suppressWarnings(read_xml(txt, as_html = TRUE)) %>% 
+        xml_child %>% 
+        xml_text 
+      cat(sprintf("Request %s failed: %s\n", index, error_msg))
+      resps[[index]] <<- error_msg
+      return(invisible(NULL))
+    } 
+    resps[[index]] <<- fromJSON(txt)
+    invisible(NULL)
   } else callback
   fail <- function(resp, index) {
     cat(sprintf("Request %s failed: %s \n", index, resp))
@@ -392,7 +454,17 @@ text_relations <- function(
   urls <- paste0(protocol, service, parameters, "&text=", curl_escape(text))
 
   done <- if (is.null(callback))  function(resp, index) {
-    resps[[index]] <<- fromJSON(rawToChar(resp$content))
+    txt <- rawToChar(resp$content)
+    if (resp$status_code != 200) {
+      error_msg <<- suppressWarnings(read_xml(txt, as_html = TRUE)) %>% 
+        xml_child %>% 
+        xml_text 
+      cat(sprintf("Request %s failed: %s\n", index, error_msg))
+      resps[[index]] <<- error_msg
+      return(invisible(NULL))
+    } 
+    resps[[index]] <<- fromJSON(txt)
+    invisible(NULL)
   } else callback
   fail <- function(resp, index) {
     cat(sprintf("Request %s failed: %s \n", index, resp))
@@ -455,7 +527,17 @@ text_taxonomy <- function(
   urls <- paste0(protocol, service, parameters, "&text=", curl_escape(text))
 
   done <- if (is.null(callback))  function(resp, index) {
-    resps[[index]] <<- fromJSON(rawToChar(resp$content))
+    txt <- rawToChar(resp$content)
+    if (resp$status_code != 200) {
+      error_msg <<- suppressWarnings(read_xml(txt, as_html = TRUE)) %>% 
+        xml_child %>% 
+        xml_text 
+      cat(sprintf("Request %s failed: %s\n", index, error_msg))
+      resps[[index]] <<- error_msg
+      return(invisible(NULL))
+    } 
+    resps[[index]] <<- fromJSON(txt)
+    invisible(NULL)
   } else callback
   fail <- function(resp, index) {
     cat(sprintf("Request %s failed: %s \n", index, resp))
@@ -521,7 +603,17 @@ text_translate <- function(
   urls <- paste0(protocol, service, parameters, "&text=", curl_escape(text))
 
   done <- if (is.null(callback))  function(resp, index) {
-    resps[[index]] <<- fromJSON(rawToChar(resp$content))
+    txt <- rawToChar(resp$content)
+    if (resp$status_code != 200) {
+      error_msg <<- suppressWarnings(read_xml(txt, as_html = TRUE)) %>% 
+        xml_child %>% 
+        xml_text 
+      cat(sprintf("Request %s failed: %s\n", index, error_msg))
+      resps[[index]] <<- error_msg
+      return(invisible(NULL))
+    } 
+    resps[[index]] <<- fromJSON(txt)
+    invisible(NULL)
   } else callback
   fail <- function(resp, index) {
     cat(sprintf("Request %s failed: %s \n", index, resp))
@@ -595,7 +687,17 @@ text_personality <- function(
   url <- paste0(protocol, service, parameters)
 
   done <- if (is.null(callback))  function(resp, index) {
-    resps[[index]] <<- fromJSON(rawToChar(resp$content))
+    txt <- rawToChar(resp$content)
+    if (resp$status_code != 200) {
+      error_msg <<- suppressWarnings(read_xml(txt, as_html = TRUE)) %>% 
+        xml_child %>% 
+        xml_text 
+      cat(sprintf("Request %s failed: %s\n", index, error_msg))
+      resps[[index]] <<- error_msg
+      return(invisible(NULL))
+    } 
+    resps[[index]] <<- fromJSON(txt)
+    invisible(NULL)
   } else callback
   fail <- function(resp, index) {
     cat(sprintf("Request %s failed: %s \n", index, resp))
@@ -668,7 +770,17 @@ text_tone <- function(
   url <- paste0(protocol, service, parameters)
 
   done <- if (is.null(callback))  function(resp, index) {
-    resps[[index]] <<- fromJSON(rawToChar(resp$content))
+    txt <- rawToChar(resp$content)
+    if (resp$status_code != 200) {
+      error_msg <<- suppressWarnings(read_xml(txt, as_html = TRUE)) %>% 
+        xml_child %>% 
+        xml_text 
+      cat(sprintf("Request %s failed: %s\n", index, error_msg))
+      resps[[index]] <<- error_msg
+      return(invisible(NULL))
+    } 
+    resps[[index]] <<- fromJSON(txt)
+    invisible(NULL)
   } else callback
   fail <- function(resp, index) {
     cat(sprintf("Request %s failed: %s \n", index, resp))

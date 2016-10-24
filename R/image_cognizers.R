@@ -44,7 +44,17 @@ image_classify <- function(
   url <- paste0(protocol, service, parameters)
 
   done <- if (is.null(callback))  function(resp, index) {
-    resps[[index]] <<- fromJSON(rawToChar(resp$content))
+    txt <- rawToChar(resp$content)
+    if (resp$status_code != 200) {
+      error_msg <<- suppressWarnings(read_xml(txt, as_html = TRUE)) %>% 
+        xml_child %>% 
+        xml_text 
+      cat(sprintf("Request %s failed: %s\n", index, error_msg))
+      resps[[index]] <<- error_msg
+      return(invisible(NULL))
+    } 
+    resps[[index]] <<- fromJSON(txt)
+    invisible(NULL)
   } else callback
   fail <- function(resp, index) {
     cat(sprintf("Request %s failed: %s \n", index, resp))
@@ -104,7 +114,17 @@ image_detectface <- function(
   url <- paste0(protocol, service, parameters)
 
   done <- if (is.null(callback))  function(resp, index) {
-    resps[[index]] <<- fromJSON(rawToChar(resp$content))
+    txt <- rawToChar(resp$content)
+    if (resp$status_code != 200) {
+      error_msg <<- suppressWarnings(read_xml(txt, as_html = TRUE)) %>% 
+        xml_child %>% 
+        xml_text 
+      cat(sprintf("Request %s failed: %s\n", index, error_msg))
+      resps[[index]] <<- error_msg
+      return(invisible(NULL))
+    } 
+    resps[[index]] <<- fromJSON(txt)
+    invisible(NULL)
   } else callback
   fail <- function(resp, index) {
     cat(sprintf("Request %s failed: %s \n", index, resp))
@@ -160,7 +180,17 @@ image_detecttext <- function(
   url <- paste0(protocol, service, parameters)
 
   done <- if (is.null(callback))  function(resp, index) {
-    resps[[index]] <<- fromJSON(rawToChar(resp$content))
+    txt <- rawToChar(resp$content)
+    if (resp$status_code != 200) {
+      error_msg <<- suppressWarnings(read_xml(txt, as_html = TRUE)) %>% 
+        xml_child %>% 
+        xml_text 
+      cat(sprintf("Request %s failed: %s\n", index, error_msg))
+      resps[[index]] <<- error_msg
+      return(invisible(NULL))
+    } 
+    resps[[index]] <<- fromJSON(txt)
+    invisible(NULL)
   } else callback
   fail <- function(resp, index) {
     cat(sprintf("Request %s failed: %s \n", index, resp))
