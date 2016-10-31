@@ -5,8 +5,7 @@
 \title{IBM Text-to-speech API.}
 \usage{
 text_audio(text, userpwd, keep_data = "true", directory,
-  voice = "en-US_AllisonVoice", accept = "audio/ogg;codecs=opus",
-  label_length = 60)
+  voice = "en-US_AllisonVoice", accept = "audio/ogg;codecs=opus")
 }
 \arguments{
 \item{text}{Character vector containing strings to be processed.}
@@ -26,9 +25,6 @@ ja-JP_EmiVoice, pt-BR_IsabelaVoice.}
 
 \item{accept}{Characte scalar specifying format for the audio. Alternatives are
 audio/wav ,audio/flac, audio/l16, audio/basic.}
-
-\item{label_length}{Integer scalar controlling the number of character to use
-from the processed text to include in the name of the audio file.}
 }
 \value{
 Audio file with selected format is saved into selected directory. The name

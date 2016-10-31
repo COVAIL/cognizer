@@ -13,6 +13,14 @@ test_that(
     expect_is(test, "list")
   }
 )
+test_that(
+  "image classifications handles errors successfully",
+  {
+    if (identical(api_key, "")) skip("no authentication provided")
+    test <- image_classify(images, substr(api_key, 1, 8))
+    expect_is(test, "list")
+  }
+)
 
 
 test_that(
@@ -20,6 +28,14 @@ test_that(
   {
     if (identical(api_key, "")) skip("no authentication provided")
     test <- image_detectface(images, api_key)
+    expect_is(test, "list")
+  }
+)
+test_that(
+  "image face detection handles errors successfully",
+  {
+    if (identical(api_key, "")) skip("no authentication provided")
+    test <- image_detectface(images, substr(api_key, 1, 8))
     expect_is(test, "list")
   }
 )
@@ -32,6 +48,14 @@ test_that(
   {
     if (identical(api_key, "")) skip("no authentication provided")
     test <- image_detecttext(images, api_key)
+    expect_is(test, "list")
+  }
+)
+test_that(
+  "image text detection handles errors successfully",
+  {
+    if (identical(api_key, "")) skip("no authentication provided")
+    test <- image_detecttext(images, substr(api_key, 1, 8))
     expect_is(test, "list")
   }
 )

@@ -14,3 +14,12 @@ test_that(
   }
 )
 
+test_that(
+  "image classification handles errors properly",
+  {
+    if (identical(userpwd, "")) skip("no authentication provided")
+    test <- audio_text(audios, substr(userpwd, 1, 10))
+    expect_is(test, "list")
+  }
+)
+
