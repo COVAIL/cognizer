@@ -2,9 +2,7 @@ cognizer
 ================
 
 [![Build Status](https://travis-ci.org/ColumbusCollaboratory/cognizer.svg?branch=master)](https://travis-ci.org/ColumbusCollaboratory/cognizer) 
-
-<!-- [![AppVeyor Build Status](https://ci.appveyor.com/api/projects/status/github/ColumbusCollaboratory/cognizer?branch=master&svg=true)](https://ci.appveyor.com/project/ColumbusCollaboratory/cognizer) - infrastructure is not ready for doing remote installs --> 
-[![codecov](https://codecov.io/gh/ColumbusCollaboratory/cognizer/branch/master/graph/badge.svg)](https://codecov.io/gh/ColumbusCollaboratory/cognizer)
+<!-- [![AppVeyor Build Status](https://ci.appveyor.com/api/projects/status/github/ColumbusCollaboratory/cognizer?branch=master&svg=true)](https://ci.appveyor.com/project/ColumbusCollaboratory/cognizer) - infrastructure is not ready for doing remote installs -->[![codecov](https://codecov.io/gh/ColumbusCollaboratory/cognizer/branch/master/graph/badge.svg)](https://codecov.io/gh/ColumbusCollaboratory/cognizer)
 
 
 
