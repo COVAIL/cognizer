@@ -31,8 +31,8 @@ text_sentiment <- function(
   show_source = 0,
   keep_data = "true",
   callback = NULL
-)
-{
+) 
+{  
   protocol <- "https://"
   service <- "gateway-a.watsonplatform.net/calls/text/TextGetTextSentiment?"
   parameters <- paste(
@@ -41,8 +41,9 @@ text_sentiment <- function(
     sep = "=",
     collapse = "&"
   )
-  urls <- paste0(protocol, service, parameters, "&text=", curl_escape(text))
-
+  url <- paste0(protocol, service, parameters)
+  text <- paste("text", curl_escape(text), sep = "=")
+  
   done <- if (is.null(callback)) function(resp, index) {
     resps[[index]] <<- fromJSON(rawToChar(resp$content))
     invisible(NULL)
@@ -52,19 +53,20 @@ text_sentiment <- function(
     invisible(NULL)
   }
   
-  resps <- vector("list", length(urls))
-  invisible(
-    lapply(
-      seq_along(urls),
+  resps <- vector("list", length(text))
+  invisible( 
+    lapply( 
+      seq_along(text),
       function(index) {
         if (is.null(callback)) formals(done)$index <- index
         formals(fail)$index <- index
-        new_handle(url = urls[index]) %>%
+        new_handle(url = url) %>%
           handle_setheaders("X-Watson-Learning-Opt-Out"= keep_data) %>%
+          handle_setopt(postfields = text[index]) %>% 
           multi_add(done = done, fail = fail)
-      }
+      } 
     )
-  )
+  ) 
 
   multi_run()
   resps
@@ -104,8 +106,9 @@ text_keywords <- function(
     sep = "=",
     collapse = "&"
   )
-  urls <- paste0(protocol, service, parameters, "&text=", curl_escape(text))
-
+  url <- paste0(protocol, service, parameters)
+  text <- paste("text", curl_escape(text), sep = "=")
+  
   done <- if (is.null(callback)) function(resp, index) {
     resps[[index]] <<- fromJSON(rawToChar(resp$content))
     invisible(NULL)
@@ -115,20 +118,21 @@ text_keywords <- function(
     invisible(NULL)
   }
   
-  resps <- vector("list", length(urls))
-  invisible(
-    lapply(
-      seq_along(urls),
+  resps <- vector("list", length(text))
+  invisible( 
+    lapply( 
+      seq_along(text),
       function(index) {
         if (is.null(callback)) formals(done)$index <- index
         formals(fail)$index <- index
-        new_handle(url = urls[index]) %>%
+        new_handle(url = url) %>%
           handle_setheaders("X-Watson-Learning-Opt-Out"= keep_data) %>%
+          handle_setopt(postfields = text[index]) %>% 
           multi_add(done = done, fail = fail)
-      }
+      } 
     )
-  )
-
+  ) 
+  
   multi_run()
   resps
 }
@@ -156,8 +160,9 @@ text_emotion <- function(
     sep = "=",
     collapse = "&"
   )
-  urls <- paste0(protocol, service, parameters, "&text=", curl_escape(text))
-
+  url <- paste0(protocol, service, parameters)
+  text <- paste("text", curl_escape(text), sep = "=")
+  
   done <- if (is.null(callback)) function(resp, index) {
     resps[[index]] <<- fromJSON(rawToChar(resp$content))
     invisible(NULL)
@@ -167,20 +172,21 @@ text_emotion <- function(
     invisible(NULL)
   }
   
-  resps <- vector("list", length(urls))
-  invisible(
-    lapply(
-      seq_along(urls),
+  resps <- vector("list", length(text))
+  invisible( 
+    lapply( 
+      seq_along(text),
       function(index) {
         if (is.null(callback)) formals(done)$index <- index
         formals(fail)$index <- index
-        new_handle(url = urls[index]) %>%
+        new_handle(url = url) %>%
           handle_setheaders("X-Watson-Learning-Opt-Out"= keep_data) %>%
+          handle_setopt(postfields = text[index]) %>% 
           multi_add(done = done, fail = fail)
-      }
+      } 
     )
-  )
-
+  ) 
+  
   multi_run()
   resps
 }
@@ -208,8 +214,9 @@ text_language <- function(
     sep = "=",
     collapse = "&"
   )
-  urls <- paste0(protocol, service, parameters, "&text=", curl_escape(text))
-
+  url <- paste0(protocol, service, parameters)
+  text <- paste("text", curl_escape(text), sep = "=")
+  
   done <- if (is.null(callback)) function(resp, index) {
     resps[[index]] <<- fromJSON(rawToChar(resp$content))
     invisible(NULL)
@@ -219,20 +226,21 @@ text_language <- function(
     invisible(NULL)
   }
   
-  resps <- vector("list", length(urls))
-  invisible(
-    lapply(
-      seq_along(urls),
+  resps <- vector("list", length(text))
+  invisible( 
+    lapply( 
+      seq_along(text),
       function(index) {
         if (is.null(callback)) formals(done)$index <- index
         formals(fail)$index <- index
-        new_handle(url = urls[index]) %>%
+        new_handle(url = url) %>%
           handle_setheaders("X-Watson-Learning-Opt-Out"= keep_data) %>%
+          handle_setopt(postfields = text[index]) %>% 
           multi_add(done = done, fail = fail)
-      }
+      } 
     )
-  )
-
+  ) 
+  
   multi_run()
   resps
 }
@@ -285,8 +293,9 @@ text_entity <- function(
     sep = "=",
     collapse = "&"
   )
-  urls <- paste0(protocol, service, parameters, "&text=", curl_escape(text))
-
+  url <- paste0(protocol, service, parameters)
+  text <- paste("text", curl_escape(text), sep = "=")
+  
   done <- if (is.null(callback)) function(resp, index) {
     resps[[index]] <<- fromJSON(rawToChar(resp$content))
     invisible(NULL)
@@ -296,20 +305,21 @@ text_entity <- function(
     invisible(NULL)
   }
   
-  resps <- vector("list", length(urls))
-  invisible(
-    lapply(
-      seq_along(urls),
+  resps <- vector("list", length(text))
+  invisible( 
+    lapply( 
+      seq_along(text),
       function(index) {
         if (is.null(callback)) formals(done)$index <- index
         formals(fail)$index <- index
-        new_handle(url = urls[index]) %>%
+        new_handle(url = url) %>%
           handle_setheaders("X-Watson-Learning-Opt-Out"= keep_data) %>%
+          handle_setopt(postfields = text[index]) %>% 
           multi_add(done = done, fail = fail)
-      }
+      } 
     )
-  )
-
+  ) 
+  
   multi_run()
   resps
 }
@@ -342,8 +352,9 @@ text_concept <- function(
     sep = "=",
     collapse = "&"
   )
-  urls <- paste0(protocol, service, parameters, "&text=", curl_escape(text))
-
+  url <- paste0(protocol, service, parameters)
+  text <- paste("text", curl_escape(text), sep = "=")
+  
   done <- if (is.null(callback)) function(resp, index) {
     resps[[index]] <<- fromJSON(rawToChar(resp$content))
     invisible(NULL)
@@ -353,20 +364,21 @@ text_concept <- function(
     invisible(NULL)
   }
   
-  resps <- vector("list", length(urls))
-  invisible(
-    lapply(
-      seq_along(urls),
+  resps <- vector("list", length(text))
+  invisible( 
+    lapply( 
+      seq_along(text),
       function(index) {
         if (is.null(callback)) formals(done)$index <- index
         formals(fail)$index <- index
-        new_handle(url = urls[index]) %>%
+        new_handle(url = url) %>%
           handle_setheaders("X-Watson-Learning-Opt-Out"= keep_data) %>%
+          handle_setopt(postfields = text[index]) %>% 
           multi_add(done = done, fail = fail)
-      }
+      } 
     )
-  )
-
+  ) 
+  
   multi_run()
   resps
 }
@@ -395,8 +407,9 @@ text_relations <- function(
     sep = "=",
     collapse = "&"
   )
-  urls <- paste0(protocol, service, parameters, "&text=", curl_escape(text))
-
+  url <- paste0(protocol, service, parameters)
+  text <- paste("text", curl_escape(text), sep = "=")
+  
   done <- if (is.null(callback)) function(resp, index) {
     resps[[index]] <<- fromJSON(rawToChar(resp$content))
     invisible(NULL)
@@ -406,20 +419,21 @@ text_relations <- function(
     invisible(NULL)
   }
   
-  resps <- vector("list", length(urls))
-  invisible(
-    lapply(
-      seq_along(urls),
+  resps <- vector("list", length(text))
+  invisible( 
+    lapply( 
+      seq_along(text),
       function(index) {
         if (is.null(callback)) formals(done)$index <- index
         formals(fail)$index <- index
-        new_handle(url = urls[index]) %>%
+        new_handle(url = url) %>%
           handle_setheaders("X-Watson-Learning-Opt-Out"= keep_data) %>%
+          handle_setopt(postfields = text[index]) %>% 
           multi_add(done = done, fail = fail)
-      }
+      } 
     )
-  )
-
+  ) 
+  
   multi_run()
   resps
 }
@@ -459,8 +473,9 @@ text_taxonomy <- function(
     sep = "=",
     collapse = "&"
   )
-  urls <- paste0(protocol, service, parameters, "&text=", curl_escape(text))
-
+  url <- paste0(protocol, service, parameters)
+  text <- paste("text", curl_escape(text), sep = "=")
+  
   done <- if (is.null(callback)) function(resp, index) {
     resps[[index]] <<- fromJSON(rawToChar(resp$content))
     invisible(NULL)
@@ -470,20 +485,21 @@ text_taxonomy <- function(
     invisible(NULL)
   }
   
-  resps <- vector("list", length(urls))
-  invisible(
-    lapply(
-      seq_along(urls),
+  resps <- vector("list", length(text))
+  invisible( 
+    lapply( 
+      seq_along(text),
       function(index) {
         if (is.null(callback)) formals(done)$index <- index
         formals(fail)$index <- index
-        new_handle(url = urls[index]) %>%
+        new_handle(url = url) %>%
           handle_setheaders("X-Watson-Learning-Opt-Out"= keep_data) %>%
+          handle_setopt(postfields = text[index]) %>% 
           multi_add(done = done, fail = fail)
-      }
+      } 
     )
-  )
-
+  ) 
+  
   multi_run()
   resps
 }
@@ -526,8 +542,9 @@ text_translate <- function(
   protocol <- "https://"
   service <- "gateway.watsonplatform.net/language-translator/api/v2/translate?"
   parameters <- paste("model_id", model_id, sep = "=")
-  urls <- paste0(protocol, service, parameters, "&text=", curl_escape(text))
-
+  url <- paste0(protocol, service, parameters)
+  text <- paste("text", curl_escape(text), sep = "=")
+  
   done <- if (is.null(callback)) function(resp, index) {
     resps[[index]] <<- fromJSON(rawToChar(resp$content))
     invisible(NULL)
@@ -537,15 +554,15 @@ text_translate <- function(
     invisible(NULL)
   }
   
-  resps <- vector("list", length(urls))
+  resps <- vector("list", length(text))
   invisible(
     lapply(
-      seq_along(urls),
+      seq_along(text),
       function(index) {
         if (is.null(callback)) formals(done)$index <- index
         formals(fail)$index <- index
-        new_handle(url = urls[index]) %>%
-          handle_setopt("userpwd" = userpwd) %>%
+        new_handle(url = url) %>%
+          handle_setopt("userpwd" = userpwd, "postfields" = text[index]) %>%
           handle_setheaders(
             "X-Watson-Learning-Opt-Out"= keep_data,
             "Accept" = accept
@@ -562,10 +579,14 @@ text_translate <- function(
 #' @title IBM personality analysis of text
 #' @description Analyze your text along the Big 5 dimensions of personality.
 #' @inheritParams text_translate
-#' @param include_raw Character scalar showing whether to include only normalized
+#' @param raw_scores Character scalar showing whether to include only normalized
 #'   statistics or also raw statistics.
-#' @param headers Character scalar showing whether to return column labels when
+#' @param consumption_preferences Character scalar showing whether to 
+#'   return consumption preferences
+#' @param csv_headers Character scalar showing whether to return column labels when
 #'   Accept-Content is set to 'text/csv'.
+#' @param version Character scalar giving date that specifies the algorithm that went
+#'   operational on or before the date. Future dates select the most recent algorithm.
 #' @param content_type Character scalar setting input data type header. Alternatives
 #'   are 'application/json; charset=utf-8' and 'text/html; charset=ISO-8859-1'.
 #' @param content_language Character scalar setting input language. Alternatives are
@@ -585,8 +606,10 @@ text_personality <- function(
   keep_data = "true",
   callback = NULL,
   model_id = "es-en-conversational",
-  include_raw = "false",
-  headers = "false",
+  raw_scores = "false",
+  consumption_preferences = "false",
+  csv_headers = "false",
+  version = "2020-01-01",
   content_type = "text/plain; charset=utf-8",
   content_language = "en",
   accept = "application/json",
@@ -594,10 +617,10 @@ text_personality <- function(
 )
 {
   protocol <- "https://"
-  service <- "gateway.watsonplatform.net/personality-insights/api/v2/profile?"
+  service <- "gateway.watsonplatform.net/personality-insights/api/v3/profile?"
   parameters <- paste(
-    c("model_id", "include_raw", "headers"),
-    c(model_id, include_raw, headers),
+    c("model_id", "raw_scores", "csv_headers"),
+    c(model_id, raw_scores, csv_headers),
     sep = "=",
     collapse = "&"
   )
