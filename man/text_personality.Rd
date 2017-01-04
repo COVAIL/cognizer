@@ -5,8 +5,9 @@
 \title{IBM personality analysis of text}
 \usage{
 text_personality(text, userpwd, keep_data = "true", callback = NULL,
-  model_id = "es-en-conversational", include_raw = "false",
-  headers = "false", content_type = "text/plain; charset=utf-8",
+  model_id = "es-en-conversational", raw_scores = "false",
+  consumption_preferences = "false", csv_headers = "false",
+  version = "2020-01-01", content_type = "text/plain; charset=utf-8",
   content_language = "en", accept = "application/json",
   accept_language = "en")
 }
@@ -31,11 +32,17 @@ or Spanish), target language (Arabic, Brazilian Portuguese, English, French,
 Italian, or Spanish) and domain of text (conversational, news, patent).
 Check IBM documentation for other language mappings.}
 
-\item{include_raw}{Character scalar showing whether to include only normalized
+\item{raw_scores}{Character scalar showing whether to include only normalized
 statistics or also raw statistics.}
 
-\item{headers}{Character scalar showing whether to return column labels when
+\item{consumption_preferences}{Character scalar showing whether to 
+return consumption preferences}
+
+\item{csv_headers}{Character scalar showing whether to return column labels when
 Accept-Content is set to 'text/csv'.}
+
+\item{version}{Character scalar giving date that specifies the algorithm that went
+operational on or before the date. Future dates select the most recent algorithm.}
 
 \item{content_type}{Character scalar setting input data type header. Alternatives
 are 'application/json; charset=utf-8' and 'text/html; charset=ISO-8859-1'.}

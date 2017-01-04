@@ -1,6 +1,6 @@
 Package: cognizer
 Title: Access to Cognitive APIs
-Version: 0.0.1
+Version: 0.0.2
 Authors@R: c(
     person("Slava", "Nikitin", email = "dl-cognizer@cbuscollaboratory.com",
       role = c("aut", "cre")),
@@ -15,13 +15,12 @@ SystemRequirements:
     libcurl: libcurl-devel (rpm) or libcurl4-openssl-dev (deb)
 Depends: R (>= 3.3.1)
 Imports: 
-    curl,
-    jsonlite (>= 0.9.19),
+    curl (>= 2.3),
+    jsonlite (>= 1.2),
     magrittr (>= 1.5)
 Suggests: 
     testthat,
     rmsfact
-Remotes: jeroenooms/curl
 License: MIT + file LICENSE
 LazyData: true
 RoxygenNote: 5.0.1
