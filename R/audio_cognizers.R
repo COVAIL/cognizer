@@ -19,8 +19,6 @@
 #'   fr-FR_BroadbandModel, ja-JP_BroadbandModel, ja-JP_NarrowbandModel,
 #'   pt-BR_BroadbandModel, pt-BR_NarrowbandModel, zh-CN_BroadbandModel,
 #'   zh-CN_NarrowbandModel.
-#' @param continuous Logical scalar specifying whether to return after a first
-#'   end-of-speech incident (long pause) or to wait to combine results.
 #' @param inactivity_timeout Integer scalar giving the number of seconds after which
 #'   the result is returned if no speech is detected.
 #' @param keywords List of keywords to be detected in the speech stream.
@@ -41,6 +39,8 @@
 #'   are audio/flac, audio/l16;rate=n;channels=k (16 channel limit),
 #'   audio/wav (9 channel limit), audio/ogg;codecs=opus,
 #'   audio/basic (narrowband models only).
+#' @param speaker_labels Logical scalar indicating whether to infer speakers on a mono
+#'   channel. Automatically turns on timestamp collection for each word. 
 #' @return List of parsed responses.
 #' @export
 audio_text <- function(
@@ -49,8 +49,7 @@ audio_text <- function(
   keep_data = "true",
   callback = NULL,
   model = "en-US_BroadbandModel",
-  continuous = FALSE,
-  inactivity_timeout = 30,
+  inactivity_timeout = -1,
   keywords = list(),
   keywords_threshold = NA,
   max_alternatives = 1,
@@ -59,30 +58,29 @@ audio_text <- function(
   timestamps = FALSE,
   profanity_filter = TRUE,
   smart_formatting = FALSE,
-  content_type = "audio/wav")
+  content_type = "audio/wav",
+  speaker_labels = FALSE)
 {
   protocol <- "https://"
   service <- "stream.watsonplatform.net/speech-to-text/api/v1/recognize?"
   parameters <- paste("model", model, sep = "=")
   url <- paste0(protocol, service, parameters)
-  metadata <- toJSON(
-    auto_unbox = TRUE,
-    list(
-      "part_content_type" = content_type,
-      "data_parts_count" = 1,
-      "continuous" = continuous,
-      "inactivity_timeout" = inactivity_timeout,
-      "keywords" = keywords,
-      "keywords_threshold" = keywords_threshold,
-      "max_alternatives" = max_alternatives,
-      "word_alternatives_threshold" = word_alternatives_threshold,
-      "word_confidence" = word_confidence,
-      "timestamps" = timestamps,
-      "profanity_filter" = profanity_filter,
-      "smart_formatting" = smart_formatting
-    )
+  metadata <- list(
+    "part_content_type" = content_type,
+    "data_parts_count" = 1,
+    "inactivity_timeout" = inactivity_timeout,
+    "keywords" = keywords,
+    "keywords_threshold" = keywords_threshold,
+    "max_alternatives" = max_alternatives,
+    "word_alternatives_threshold" = word_alternatives_threshold,
+    "word_confidence" = word_confidence,
+    "timestamps" = timestamps,
+    "profanity_filter" = profanity_filter,
+    "smart_formatting" = smart_formatting,
+    "speaker_labels" = speaker_labels
   )
-
+  metadata <- toJSON(metadata[!is.na(metadata)], auto_unbox = TRUE)
+  
   done <- if (is.null(callback)) function(resp, index) {
     resps[[index]] <<- fromJSON(rawToChar(resp$content))
     invisible(NULL)
@@ -91,7 +89,7 @@ audio_text <- function(
     resps[[index]] <<- resp
     invisible(NULL)
   }
-
+  
   resps <- vector("list", length(audios))
   invisible(
     lapply(
@@ -112,7 +110,7 @@ audio_text <- function(
       }
     )
   )
-
+  
   multi_run()
   resps
 }
