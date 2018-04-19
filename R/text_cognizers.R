@@ -619,8 +619,8 @@ text_personality <- function(
   protocol <- "https://"
   service <- "gateway.watsonplatform.net/personality-insights/api/v3/profile?"
   parameters <- paste(
-    c("model_id", "raw_scores", "csv_headers"),
-    c(model_id, raw_scores, csv_headers),
+    c("model_id", "raw_scores", "csv_headers", "version"),
+    c(model_id, raw_scores, csv_headers, version),
     sep = "=",
     collapse = "&"
   )
